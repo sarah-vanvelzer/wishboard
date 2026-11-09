@@ -1,3 +1,4 @@
+from pathlib import Path
 from app.schemas import Pin
 
 def image_url_from_hash(h: str) -> str:
@@ -27,3 +28,9 @@ def parse_file(path: str) -> list[Pin]:
     chunks = t.split('<a href="https://www.pinterest.com/pin/')
     pins = [parse_chunk(c) for c in chunks[1:]]
     return pins
+
+def parse_export(folder: str) -> list[Pin]:
+    all_pins = []
+    for path in sorted(Path(folder).glob("0*.html")):
+        all_pins.extend(parse_file(path))
+    return all_pins
