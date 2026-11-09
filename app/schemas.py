@@ -4,6 +4,7 @@ class Pin(BaseModel):
     source: str
     source_id: str
     title: str = ""
+    description: str = ""
     board: str = ""
     board_id: str = ""
     image_url: str | None = None
