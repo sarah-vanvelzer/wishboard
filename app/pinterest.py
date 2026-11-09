@@ -20,6 +20,7 @@ def parse_chunk(chunk: str) -> Pin:
         title=get_field(chunk, "Title"),
         description=get_field(chunk, "Details"),
         board=get_field(chunk, "Board Name"),
+        board_id=get_field(chunk, "Board Id"),
         image_url=image_url_from_hash(image_hash) if image_hash else None,
     )
 
@@ -33,4 +34,17 @@ def parse_export(folder: str) -> list[Pin]:
     all_pins = []
     for path in sorted(Path(folder).glob("0*.html")):
         all_pins.extend(parse_file(path))
+    fill_board_names(all_pins)
     return all_pins
+
+def fill_board_names(pins: list[Pin]) -> None:
+    # Learn names: for every bin that has both, remember id -> name
+    names = {}
+    for p in pins:
+        if p.board and p.board_id:
+            names[p.board_id] = p.board
+
+    # Fill in blanks: look up every bin with no board name
+    for p in pins:
+        if not p.board:
+            p.board = names.get(p.board_id, "")

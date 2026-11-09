@@ -5,5 +5,6 @@ class Pin(BaseModel):
     source_id: str
     title: str = ""
     board: str = ""
+    board_id: str = ""
     image_url: str | None = None
     link: str | None = None
