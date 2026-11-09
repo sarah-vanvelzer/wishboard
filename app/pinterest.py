@@ -21,3 +21,9 @@ def parse_chunk(chunk: str) -> Pin:
         board=get_field(chunk, "Board Name"),
         image_url=image_url_from_hash(image_hash) if image_hash else None,
     )
+
+def parse_file(path: str) -> list[Pin]:
+    t = open(path).read()
+    chunks = t.split('<a href="https://www.pinterest.com/pin/')
+    pins = [parse_chunk(c) for c in chunks[1:]]
+    return pins
