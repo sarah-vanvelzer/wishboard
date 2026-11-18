@@ -1,4 +1,5 @@
 import json
+import time
 
 from ddgs import DDGS
 from pydantic import BaseModel
