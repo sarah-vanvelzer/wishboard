@@ -32,6 +32,7 @@ Write 2 short web search queries (plain keywords, no quotes or special character
     return json.loads(call_gemini(prompt, schema=Queries))["queries"]
 
 def search(query, n=5, attempts=3):
+    time.sleep(3)
     for attempt in range(attempts):
         try:
             results = DDGS().text(query, max_results=n)
@@ -53,13 +54,17 @@ Each "name" must be a real brand + product name (e.g. "Garmin Forerunner 165", "
 "why": one sentence on why it fits."""
     return json.loads(call_gemini(prompt, schema=IdeaList))["ideas"]
 
+BAD_URL_PARTS = ["/s?k=", "/market/", "/browse/", "/collections/", "/search", "/w/"]
+
+def looks_like_product(url):
+    return not any(part in url for part in BAD_URL_PARTS)
 
 def verify_product(name):
-    results = search(name, n=3)
-    if not results:
-        return None
-    top = results[0]
-    return {"link": top["href"], "source": top["title"]}
+    results = search(name, n=5)
+    for r in results:
+        if looks_like_product(r["href"]):
+            return {"link": r["href"], "source": r["title"]}
+    return None
 
 
 def find_gifts(theme_name, reason):

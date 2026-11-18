@@ -1,0 +1,8 @@
+CREATE TABLE gifts (
+    id SERIAL PRIMARY KEY,
+    theme_id INT NOT NULL REFERENCES themes(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    why TEXT NOT NULL DEFAULT '',
+    link TEXT NOT NULL,
+    source TEXT NOT NULL DEFAULT ''
+);
