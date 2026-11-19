@@ -1,4 +1,5 @@
 # Wishboard 🎄
+![CI](https://github.com/sarah-vanvelzer/wishboard/actions/workflows/ci.yml/badge.svg)
 
 Turns 22,000+ saved Pinterest pins into themes and a ranked Christmas gift list,
 using CLIP embeddings, clustering, and an LLM agent.
