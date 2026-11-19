@@ -1,5 +1,6 @@
 import json
 import time
+from datetime import date
 
 from ddgs import DDGS
 from pydantic import BaseModel
@@ -27,7 +28,7 @@ class IdeaList(BaseModel):
     ideas: list[Idea]
 
 def plan_queries(theme_name, reason):
-    prompt = f"""You are shopping for a Christmas gift for a young woman whose Pinterest shows a strong interest in: {theme_name} ({reason}).
+    prompt = f"""It is {date.today().year}. You are shopping for a Christmas gift for a young woman whose Pinterest shows a strong interest in: {theme_name} ({reason}).
 Write 2 short web search queries (plain keywords, no quotes or special characters) that would find specific gift products for this interest."""
     return json.loads(call_gemini(prompt, schema=Queries))["queries"]
 
@@ -54,7 +55,8 @@ Each "name" must be a real brand + product name (e.g. "Garmin Forerunner 165", "
 "why": one sentence on why it fits."""
     return json.loads(call_gemini(prompt, schema=IdeaList))["ideas"]
 
-BAD_URL_PARTS = ["/s?k=", "/market/", "/browse/", "/collections/", "/search", "/w/"]
+BAD_URL_PARTS = ["/s?k=", "/market/", "/browse/", "/collections/", "/search", "/w/", "/clp/", "/shop/",
+                 "runrepeat.com", "reddit.com", "youtube.com"]
 
 def looks_like_product(url):
     return not any(part in url for part in BAD_URL_PARTS)

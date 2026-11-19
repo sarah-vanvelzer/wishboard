@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Wishboard 🎄</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; background: #fdf8f3; color: #2b2b2b; }
+    h1 { margin-bottom: 4px; }
+    .theme { background: white; border-radius: 14px; padding: 18px 22px; margin: 18px 0; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .gift { margin: 12px 0; }
+    .gift a { font-weight: 600; color: #b3261e; text-decoration: none; }
+    .gift p { margin: 4px 0 0; color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Sarah's Christmas List 🎄</h1>
+  <p>Generated from 22,911 Pinterest pins.</p>
+  <div id="list">Loading…</div>
+
+  <script>
+    fetch("/wishlist")
+      .then(res => res.json())
+      .then(themes => {
+        document.getElementById("list").innerHTML = themes.map(t => `
+          <div class="theme">
+            <h2>${t.theme}</h2>
+            ${t.gifts.map(g => `
+              <div class="gift">
+                <a href="${g.link}" target="_blank">${g.name}</a>
+                <p>${g.why}</p>
+              </div>`).join("")}
+          </div>`).join("");
+      });
+  </script>
+</body>
+</html>
