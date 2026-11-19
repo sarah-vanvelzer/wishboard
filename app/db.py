@@ -1,10 +1,11 @@
 import psycopg
+import os
 
 from app.schemas import Pin
 
 from pgvector.psycopg import register_vector
 
-DATABASE_URL = "postgresql://localhost:5433/wishboard"
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://localhost:5433/wishboard")
 
 INSERT_PIN = """
     INSERT INTO pins (source, source_id, title, description, board, board_id, image_url, link)
